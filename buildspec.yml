@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:      
+      - echo No prebuild            
+  build:
+    commands:
+      - aws s3api put-object --bucket silver-july-2023-beta --key index.html --body index.html --acl public-read --content-type text/html
+      - if [ "$CODEBUILD_WEBHOOK_EVENT" == "PULL_REQUEST_MERGED" ]  ; then aws s3api put-object --bucket silver-july-2023-prod --key index.html --body index.html --acl public-read --content-type text/html; fi
